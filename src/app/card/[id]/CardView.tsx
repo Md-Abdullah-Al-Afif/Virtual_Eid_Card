@@ -153,7 +153,7 @@ export default function CardView({ id }: { id: string }) {
         ))}
       </div>
 
-      <div className="relative z-10 max-w-lg mx-auto px-4 py-6 pb-24">
+      <div className="relative z-10" style={{ width: '100%', maxWidth: 520, margin: '0 auto', padding: '24px 16px 96px', boxSizing: 'border-box' }}>
         {/* Nav bar */}
         <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:24 }}>
           <button className="glass btn-ghost" onClick={() => router.push('/')}

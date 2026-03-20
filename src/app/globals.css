@@ -11,16 +11,19 @@
   --gb: rgba(251,191,36,0.18);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+}
 
 body {
   background: var(--bg);
   color: #f0fdf4;
   font-family: 'Nunito', sans-serif;
   min-height: 100vh;
-  overflow-x: hidden;
-  width: 100%;
-  max-width: 100vw;
 }
 
 /* ── ANIMATIONS ── */
@@ -47,6 +50,7 @@ body {
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--gb);
   border-radius: 20px;
+  box-sizing: border-box;
 }
 
 .animate-float  { animation: float  8s ease-in-out infinite; }
@@ -66,6 +70,7 @@ body {
   font-size: 16px;
   transition: all .3s;
   outline: none;
+  box-sizing: border-box;
 }
 .inp:focus {
   border-color: var(--gold);
@@ -73,6 +78,7 @@ body {
   box-shadow: 0 0 0 3px rgba(251,191,36,.1);
 }
 .inp::placeholder { color: rgba(240,253,244,.3); }
+textarea.inp { resize: vertical; line-height: 1.6; }
 
 /* ── BUTTONS ── */
 .btn-gold {
@@ -113,9 +119,39 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 26px 22px;
+  padding: 22px 18px;
   overflow: hidden;
-  min-height: 460px;
+  min-height: 420px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Fix card text overflow */
+.ccard p {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+/* ── RESPONSIVE GRID ── */
+.eid-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  max-width: 1140px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (min-width: 920px) {
+  .eid-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .eid-preview-col {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+  }
 }
 
 /* ── TOAST ── */
@@ -138,18 +174,3 @@ body {
   pointer-events: none;
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
-
-/* ── MOBILE FIX ── */
-html {
-  overflow-x: hidden;
-}
-
-.glass {
-  box-sizing: border-box;
-}
-
-textarea.inp {
-  font-size: 16px;
-  resize: vertical;
-  line-height: 1.6;
-}
