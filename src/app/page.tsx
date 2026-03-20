@@ -94,7 +94,7 @@ export default function HomePage() {
           <h1 className="text-7xl font-black leading-tight">
             <span className="gold-text">ঈদ কার্ড</span>
           </h1>
-          <p className="mt-3 text-lg font-medium" style={{ color: 'rgba(52,211,153,.7)' }}>প্রিয়জনদের জন্য বিশেষ ঈদের কার্ড তৈরি করুন</p>
+          <p className="mt-3 text-lg font-medium" style={{ color: 'rgba(52,211,153,.7)' }}>প্রিয়জনদের জন্য বিশেষ ঈদ কার্ড তৈরি করুন</p>
           <p className="text-sm mt-1" style={{ color: 'rgba(255,255,255,.3)' }}>Create &amp; share beautiful virtual Eid cards</p>
         </header>
 
@@ -210,6 +210,26 @@ export default function HomePage() {
 
           </div>
         </main>
+        <footer style={{
+          textAlign: 'center',
+          padding: '24px 16px',
+          fontSize: 13,
+          color: 'rgba(255,255,255,.3)',
+          borderTop: '1px solid rgba(251,191,36,.08)',
+          marginTop: 8,
+        }}>
+          Made with <span style={{ color: '#f472b6', fontSize: 15 }}>💓</span> by{' '}
+          <span style={{
+            background: 'linear-gradient(135deg,#fde68a,#fbbf24)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            fontWeight: 700,
+          }}>
+            Afif
+          </span>
+        </footer>
+
       </div>
 
       {/* Toast */}

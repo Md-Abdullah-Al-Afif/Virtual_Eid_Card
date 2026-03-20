@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'ঈদ কার্ড | Eid Virtual Card Generator',
+  title: 'ঈদ কার্ড | Virtual Eid Card Generator',
   description: 'Create and share beautiful virtual Eid cards. ঈদের শুভেচ্ছা জানান আপনার প্রিয়জনদের।',
   openGraph: {
     title: 'ঈদ কার্ড | Eid Mubarak',
