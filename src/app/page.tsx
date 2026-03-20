@@ -91,29 +91,29 @@ export default function HomePage() {
           <div className="inline-flex items-center gap-2 glass text-xs px-5 py-2 rounded-full mb-6" style={{ color: 'rgba(251,191,36,.8)' }}>
             🌙 &nbsp;ঈদ মোবারক &nbsp;✦&nbsp; Eid Mubarak ✨
           </div>
-          <h1 className="text-7xl font-black leading-tight">
+          <h1 className="text-5xl md:text-7xl font-black leading-tight">
             <span className="gold-text">ঈদ কার্ড</span>
           </h1>
           <p className="mt-3 text-lg font-medium" style={{ color: 'rgba(52,211,153,.7)' }}>প্রিয়জনদের জন্য বিশেষ ঈদ কার্ড তৈরি করুন</p>
           <p className="text-sm mt-1" style={{ color: 'rgba(255,255,255,.3)' }}>Create &amp; share beautiful virtual Eid cards</p>
         </header>
 
-        <main className="max-w-6xl mx-auto px-4 pb-24">
-          <div className="grid lg:grid-cols-2 gap-6">
+        <main className="max-w-6xl mx-auto pb-24" style={{ padding: '0 16px 96px', boxSizing: 'border-box', width: '100%', minWidth: 0 }}>
+          <div className="grid lg:grid-cols-2 gap-6" style={{ minWidth: 0 }}>
 
             {/* ── LEFT FORM ── */}
-            <div className="space-y-4">
+            <div className="space-y-4" style={{ minWidth: 0, overflow: 'hidden' }}>
 
               {/* Template */}
               <div className="glass p-6">
                 <h2 className="font-bold text-lg mb-4 flex items-center gap-2" style={{ fontFamily: "'Playfair Display',serif", color: '#fde68a' }}>
                   ✦ টেমপ্লেট বেছে নিন
                 </h2>
-                <div className="grid grid-cols-3 gap-3">
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 8 }}>
                   {([
                     { id: 'moonlight', label: '🌙 চাঁদনী রাত', sub: 'Moonlit Night', bg: 'linear-gradient(170deg,#04091e,#080e28,#04130a)' },
                     { id: 'lantern',   label: '🏮 সোনালি লণ্ঠন', sub: 'Golden Lantern', bg: 'linear-gradient(170deg,#180800,#2a1000,#160600)' },
-                    { id: 'geometric', label: '✦ ইসলামিক জ্যামিতি', sub: 'Islamic Geometric', bg: 'linear-gradient(170deg,#021a10,#053d28,#021a10)' },
+                    { id: 'geometric', label: '✦ জ্যামিতি', sub: 'Islamic Geometric', bg: 'linear-gradient(170deg,#021a10,#053d28,#021a10)' },
                   ] as const).map(t => (
                     <button key={t.id} onClick={() => setTpl(t.id)}
                       className="rounded-2xl overflow-hidden transition-all duration-300 relative"
@@ -126,7 +126,7 @@ export default function HomePage() {
                         <TplThumb id={t.id} />
                       </div>
                       <div className="py-2 px-1 text-center" style={{ background: 'rgba(0,0,0,.5)' }}>
-                        <p className="text-xs font-bold" style={{ color: '#fde68a' }}>{t.label}</p>
+                        <p style={{ color: '#fde68a', fontSize: 10, fontWeight: 700, wordBreak: 'break-word', lineHeight: 1.3 }}>{t.label}</p>
                         <p className="text-xs" style={{ color: 'rgba(255,255,255,.38)', fontSize: 9 }}>{t.sub}</p>
                       </div>
                       {tpl === t.id && (
