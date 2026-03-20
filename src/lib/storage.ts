@@ -1,45 +1,43 @@
+import { initializeApp, getApps } from 'firebase/app'
+import { getFirestore, doc, setDoc, getDoc, updateDoc, increment } from 'firebase/firestore'
+
+const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+}
+
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
+const db = getFirestore(app)
+
 export interface CardData {
   id: string
   tpl: 'moonlight' | 'lantern' | 'geometric'
-  sn: string       // sender name
-  rn: string       // receiver name
-  msg: string      // message
-  sig: string      // signature
+  sn: string
+  rn: string
+  msg: string
+  sig: string
   salami: boolean
-  bk: string       // bkash
-  ng: string       // nagad
-  up: string       // upay
-  vc: number       // view count
-  ts: number       // timestamp
+  bk: string
+  ng: string
+  up: string
+  vc: number
+  ts: number
 }
 
-export function saveCard(card: CardData): void {
-  if (typeof window === 'undefined') return
-  const store = getStore()
-  store[card.id] = card
-  localStorage.setItem('eid_cards', JSON.stringify(store))
+export async function createCard(card: CardData): Promise<void> {
+  await setDoc(doc(db, 'cards', card.id), card)
 }
 
-export function getCard(id: string): CardData | null {
-  if (typeof window === 'undefined') return null
-  const store = getStore()
-  return store[id] || null
+export async function getCard(id: string): Promise<CardData | null> {
+  const snap = await getDoc(doc(db, 'cards', id))
+  if (!snap.exists()) return null
+  return snap.data() as CardData
 }
 
-export function incrementView(id: string): void {
-  if (typeof window === 'undefined') return
-  const store = getStore()
-  if (store[id]) {
-    store[id].vc = (store[id].vc || 0) + 1
-    localStorage.setItem('eid_cards', JSON.stringify(store))
-  }
-}
-
-function getStore(): Record<string, CardData> {
-  try {
-    const d = localStorage.getItem('eid_cards')
-    return d ? JSON.parse(d) : {}
-  } catch {
-    return {}
-  }
+export async function incrementView(id: string): Promise<void> {
+  await updateDoc(doc(db, 'cards', id), { vc: increment(1) })
 }

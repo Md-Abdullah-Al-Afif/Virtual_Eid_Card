@@ -26,12 +26,15 @@ export default function CardView({ id }: { id: string }) {
   const cardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const found = getCard(id)
-    if (found) {
-      incrementView(id)
-      setCard({ ...found, vc: found.vc + 1 })
+    async function loadCard() {
+      const found = await getCard(id)
+      if (found) {
+        await incrementView(id)
+        setCard({ ...found, vc: found.vc + 1 })
+      }
+      setLoading(false)
     }
-    setLoading(false)
+    loadCard()
   }, [id])
 
   useEffect(() => {

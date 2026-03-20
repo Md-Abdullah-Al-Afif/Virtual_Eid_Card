@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { CardData, saveCard } from '@/lib/storage'
+import { CardData, createCard } from '@/lib/storage'
 import CardCanvas from './CardCanvas'
 
 function genId() {
@@ -60,7 +60,7 @@ export default function HomePage() {
       bk: bk.trim(), ng: ng.trim(), up: up.trim(),
       vc: 0, ts: Date.now(),
     }
-    saveCard(card)
+    await createCard(card)
     router.push(`/card/${card.id}`)
   }
 
