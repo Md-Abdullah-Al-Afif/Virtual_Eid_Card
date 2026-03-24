@@ -1,5 +1,5 @@
 import { initializeApp, getApps } from 'firebase/app'
-import { getFirestore } from 'firebase/firestore'
+import { getFirestore, initializeFirestore, CACHE_SIZE_UNLIMITED } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -11,4 +11,15 @@ const firebaseConfig = {
 }
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
-export const db = getFirestore(app)
+
+let db: ReturnType<typeof getFirestore>
+try {
+  db = initializeFirestore(app, {
+    experimentalForceLongPolling: true,
+    cacheSizeBytes: CACHE_SIZE_UNLIMITED,
+  })
+} catch {
+  db = getFirestore(app)
+}
+
+export { db }

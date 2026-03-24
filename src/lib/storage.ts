@@ -1,17 +1,5 @@
-import { initializeApp, getApps } from 'firebase/app'
-import { getFirestore, doc, setDoc, getDoc, updateDoc, increment } from 'firebase/firestore'
-
-const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-}
-
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
-const db = getFirestore(app)
+import { db } from './firebase'
+import { doc, getDoc, setDoc, updateDoc, increment } from 'firebase/firestore'
 
 export interface CardData {
   id: string
@@ -28,16 +16,30 @@ export interface CardData {
   ts: number
 }
 
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  const timeout = new Promise<never>((_, reject) =>
+    setTimeout(() => reject(new Error(`Timed out after ${ms}ms`)), ms)
+  )
+  return Promise.race([promise, timeout])
+}
+
 export async function createCard(card: CardData): Promise<void> {
-  await setDoc(doc(db, 'cards', card.id), card)
+  await withTimeout(setDoc(doc(db, 'cards', card.id), card), 10000)
 }
 
 export async function getCard(id: string): Promise<CardData | null> {
-  const snap = await getDoc(doc(db, 'cards', id))
-  if (!snap.exists()) return null
-  return snap.data() as CardData
+  try {
+    const snap = await withTimeout(getDoc(doc(db, 'cards', id)), 10000)
+    if (!snap.exists()) return null
+    return snap.data() as CardData
+  } catch (err) {
+    console.error('getCard failed:', err)
+    return null
+  }
 }
 
-export async function incrementView(id: string): Promise<void> {
-  await updateDoc(doc(db, 'cards', id), { vc: increment(1) })
+export function incrementView(id: string): void {
+  updateDoc(doc(db, 'cards', id), { vc: increment(1) }).catch((err) =>
+    console.warn('incrementView failed (non-critical):', err)
+  )
 }

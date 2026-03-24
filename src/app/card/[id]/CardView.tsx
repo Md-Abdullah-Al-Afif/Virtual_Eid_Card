@@ -27,12 +27,18 @@ export default function CardView({ id }: { id: string }) {
 
   useEffect(() => {
     async function loadCard() {
-      const found = await getCard(id)
-      if (found) {
-        await incrementView(id)
-        setCard({ ...found, vc: found.vc + 1 })
+      try {
+        const found = await getCard(id)
+        if (found) {
+          // Fire-and-forget: don't await view count — never block card display
+          incrementView(id)
+          setCard({ ...found, vc: found.vc + 1 })
+        }
+      } catch (err) {
+        console.error('Failed to load card:', err)
+      } finally {
+        setLoading(false)
       }
-      setLoading(false)
     }
     loadCard()
   }, [id])
