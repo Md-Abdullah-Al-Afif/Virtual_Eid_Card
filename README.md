@@ -1,158 +1,163 @@
-# 🌙 ঈদ কার্ড Generator — Next.js
+# 🌙 ঈদ কার্ড — Virtual Eid Card Generator
 
-## Quick Start (Local)
+A beautifully designed virtual Eid card generator built with **Next.js 16**, **Firebase Firestore**, and deployed on **Vercel**.
+
+Create a personalized Eid card, share the link with anyone — they can view it instantly on any device, anywhere.
+
+---
+
+## ✨ Features
+
+- 3 hand-crafted card templates — Moonlit Night, Golden Lantern, Islamic Geometric
+- Live preview as you type
+- Eid Salami request (bKash, Nagad, Rocket)
+- Shareable link — works across all devices and browsers
+- View counter on each card
+- Download card as PNG
+- Fully responsive — mobile, tablet, desktop
+- Hosted on Vercel, data stored in Firebase Firestore
+
+---
+
+## 🛠 Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 16 (App Router) |
+| Styling | Tailwind CSS + custom CSS |
+| Database | Firebase Firestore |
+| Hosting | Vercel |
+| Language | TypeScript |
+
+---
+
+## 📁 Project Structure
+
+```
+src/
+├── app/
+│   ├── layout.tsx          ← Root HTML layout + fonts + viewport
+│   ├── page.tsx            ← Home page (card creator form + live preview)
+│   ├── globals.css         ← All styles, animations, responsive rules
+│   ├── CardCanvas.tsx      ← 3 card template renderers
+│   └── card/[id]/
+│       ├── page.tsx        ← Dynamic card route (async params for Next.js 15+)
+│       └── CardView.tsx    ← Card view page + share + download
+└── lib/
+    ├── firebase.ts         ← Firebase app init (single instance, long polling)
+    └── storage.ts          ← Firestore read/write helpers with timeout
+```
+
+---
+
+## 🔧 Local Development
+
+### Prerequisites
+
+```bash
+node --version   # v18 or higher required
+npm --version    # v8 or higher
+```
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Md-Abdullah-Al-Afif/Virtual_Eid_Card.git
+cd eid-card-generator
+```
+
+### 2. Set up environment variables
+
+Create a `.env.local` file in the project root:
+
+```env
+NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+```
+
+Find these values in **Firebase Console → Project Settings → Your apps → SDK setup → Config**.
+
+> ⚠️ `.env.local` is gitignored and never committed. Never share or expose these values publicly.
+
+### 3. Install and run
 
 ```bash
 npm install
 npm run dev
 ```
-Open http://localhost:3000
+
+Open [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## 🚀 Step-by-Step Vercel Deployment
+## 🚀 Deployment (Vercel)
 
-### Step 1 — Check Prerequisites
+This project is deployed on Vercel. Every push to the `main` branch triggers an automatic redeploy.
 
-Open your terminal and verify these are installed:
+### Environment Variables on Vercel
+
+Since `.env.local` is never deployed, all 6 Firebase variables must be added in the Vercel dashboard:
+
+1. Go to [vercel.com](https://vercel.com) → Your Project → **Settings** → **Environment Variables**
+2. Add each `NEXT_PUBLIC_FIREBASE_*` variable with its value
+3. Make sure **Production**, **Preview**, and **Development** are all checked
+4. Go to **Deployments** → latest deployment → **⋯** → **Redeploy**
+
+> ⚠️ After adding or changing env vars, you must redeploy. Next.js bakes `NEXT_PUBLIC_*` values into the JS bundle at build time.
+
+### Deploying updates
 
 ```bash
-node --version   # Need v18 or higher
-npm --version    # Need v8 or higher
-git --version    # Any version
-```
-
-Download Node.js from https://nodejs.org (choose LTS version)
-Download Git from https://git-scm.com/downloads
-
----
-
-### Step 2 — Install & Test Locally
-
-```bash
-# Inside the eid-card-generator folder:
-npm install
-npm run dev
-```
-
-Open http://localhost:3000 — you should see the Eid Card Generator.
-Test creating a card. Press Ctrl+C to stop.
-
----
-
-### Step 3 — Create a GitHub Account & Repository
-
-1. Go to https://github.com and sign up (free)
-2. Click the "+" icon → "New repository"
-3. Name it: `eid-card-generator`
-4. Set to **Private**
-5. Click "Create repository"
-
----
-
-### Step 4 — Push Your Code to GitHub
-
-Run these commands inside your project folder:
-
-```bash
-git init
 git add .
-git commit -m "Initial commit: Eid Card Generator"
-
-# Replace YOUR_USERNAME with your GitHub username:
-git remote add origin https://github.com/YOUR_USERNAME/eid-card-generator.git
-git branch -M main
-git push -u origin main
-```
-
-If asked for a password, use a GitHub Personal Access Token:
-→ https://github.com/settings/tokens → Generate new token (classic) → check "repo" scope
-
----
-
-### Step 5 — Deploy to Vercel (FREE)
-
-**Option A — Vercel Dashboard (Easiest, no terminal needed):**
-
-1. Go to https://vercel.com and sign up with your GitHub account
-2. Click **"Add New Project"**
-3. Find `eid-card-generator` in the list → Click **Import**
-4. Framework is auto-detected as **Next.js** — don't change anything
-5. Click **Deploy**
-6. Wait ~2 minutes
-7. ✅ Your site is LIVE at something like `eid-card-generator-abc.vercel.app`
-
-**Option B — Vercel CLI:**
-
-```bash
-npm install -g vercel
-vercel login
-vercel --prod
-```
-
----
-
-### Step 6 — Your Live URL
-
-Cards are shared as:
-`https://YOUR-APP.vercel.app/card/[cardId]`
-
-Example: `https://eid-card-generator.vercel.app/card/ab3f9c12`
-
----
-
-### Step 7 — Custom Domain (Optional, Free)
-
-In Vercel Dashboard → Your Project → Settings → Domains
-→ Add your domain like `eidcard.com` → Follow DNS instructions
-
----
-
-### Step 8 — Auto-Deploy on Updates
-
-Every time you push to GitHub main branch, Vercel auto-redeploys:
-
-```bash
-# After making changes:
-git add .
-git commit -m "Update design"
+git commit -m "your change description"
 git push
-# Vercel deploys automatically in ~1 minute
+# Vercel auto-deploys in ~1 minute
 ```
 
 ---
 
-## File Structure
+## 🔥 Firebase Setup
 
+### Firestore Security Rules
+
+In **Firebase Console → Firestore Database → Rules**, use these rules:
+
+```js
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /cards/{cardId} {
+      // Anyone can read a card (required for shared links)
+      allow read: if true;
+
+      // Anyone can create a card
+      allow create: if true;
+
+      // Only the view count field can be updated
+      allow update: if request.resource.data.diff(resource.data)
+                        .affectedKeys().hasOnly(['vc']);
+    }
+  }
+}
 ```
-eid-card-generator/
-├── src/
-│   ├── app/
-│   │   ├── layout.tsx       ← Root HTML layout
-│   │   ├── page.tsx         ← Home page (card creator)
-│   │   ├── globals.css      ← All styles + animations
-│   │   ├── CardCanvas.tsx   ← The 3 beautiful card designs
-│   │   └── card/[id]/
-│   │       ├── page.tsx     ← Card view route
-│   │       └── CardView.tsx ← Full card view + sharing
-│   └── lib/
-│       └── storage.ts       ← localStorage card storage
-├── package.json
-├── next.config.js
-├── tailwind.config.js
-└── tsconfig.json
-```
 
-## Notes
+---
 
-- Cards are saved in the user's browser (localStorage)
-- No database needed — works 100% on Vercel free tier
-- To share across devices, the recipient needs the link (cards are read from localStorage on the creator's device via the URL — for cross-device sharing, add Firebase as described below)
+## 🃏 How Cards Work
 
-## Optional: Firebase for Cross-Device Cards
+1. User fills out the form on the home page and clicks **Generate**
+2. A card document is written to Firestore with a random 8-character ID
+3. User is redirected to `/card/[id]`
+4. That page reads the card from Firestore and renders it
+5. The shareable link (`/card/[id]`) works on any device and any browser
+6. Each view increments the `vc` (view count) field in Firestore
 
-If you want cards to work across different devices/browsers:
-1. Create project at https://console.firebase.google.com
-2. Enable Firestore Database
-3. Create `.env.local` with your Firebase config
-4. Update `src/lib/storage.ts` to use Firestore instead of localStorage
+---
+
+## 📄 License
+
+MIT — free to use and modify.
