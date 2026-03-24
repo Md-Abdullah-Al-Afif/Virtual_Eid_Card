@@ -86,8 +86,8 @@ export default function HomePage() {
       <div className="fixed inset-0 z-0 pointer-events-none" style={{
         background: 'radial-gradient(ellipse 80% 60% at 15% 10%,#040f1a,transparent 70%), radial-gradient(ellipse 60% 80% at 85% 90%,#040f1a,transparent 70%), linear-gradient(180deg,#03090d 0%,#050e08 50%,#03090d 100%)'
       }}>
-        <div className="absolute rounded-full -top-10 -left-10" style={{ width: 550, height: 550, background: 'rgba(5,20,10,.65)', filter: 'blur(90px)' }} />
-        <div className="absolute rounded-full bottom-10 -right-10" style={{ width: 450, height: 350, background: 'rgba(4,10,24,.65)', filter: 'blur(90px)' }} />
+        <div className="absolute rounded-full -top-10 -left-10" style={{ width: 'min(550px, 80vw)', height: 'min(550px, 80vw)', background: 'rgba(5,20,10,.65)', filter: 'blur(90px)' }} />
+        <div className="absolute rounded-full bottom-10 -right-10" style={{ width: 'min(450px, 70vw)', height: 'min(350px, 55vw)', background: 'rgba(4,10,24,.65)', filter: 'blur(90px)' }} />
         {STARS.map((s, i) => (
           <div key={i} className="absolute rounded-full" style={{
             width: s.w, height: s.w,
@@ -107,7 +107,8 @@ export default function HomePage() {
           <div className="glass" style={{
             display: 'inline-flex', alignItems: 'center', gap: 6,
             fontSize: 12, color: 'rgba(251,191,36,.8)',
-            padding: '6px 18px', borderRadius: 99, marginBottom: 20,
+            padding: '6px 18px', borderRadius: 99,
+            width: 'fit-content', margin: '0 auto 20px',
           }}>
             🌙 &nbsp;ঈদ মোবারক &nbsp;✦&nbsp; Eid Mubarak ✨
           </div>
@@ -134,7 +135,7 @@ export default function HomePage() {
                 <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 17, color: '#fde68a', marginBottom: 14 }}>
                   ✦ টেমপ্লেট বেছে নিন
                 </h2>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8 }}>
+                <div className="tpl-grid">
                   {TEMPLATES.map(t => (
                     <button key={t.id} onClick={() => setTpl(t.id)} style={{
                       borderRadius: 14, overflow: 'hidden',

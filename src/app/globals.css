@@ -13,17 +13,22 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html, body {
+html {
   overflow-x: hidden;
   width: 100%;
   max-width: 100%;
 }
 
 body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
   background: var(--bg);
   color: #f0fdf4;
   font-family: 'Nunito', sans-serif;
   min-height: 100vh;
+  /* Prevent any child from causing horizontal scroll */
+  position: relative;
 }
 
 /* ── ANIMATIONS ── */
@@ -51,6 +56,9 @@ body {
   border: 1px solid var(--gb);
   border-radius: 20px;
   box-sizing: border-box;
+  /* Prevent glass panels from overflowing their container */
+  min-width: 0;
+  width: 100%;
 }
 
 .animate-float  { animation: float  8s ease-in-out infinite; }
@@ -71,6 +79,9 @@ body {
   transition: all .3s;
   outline: none;
   box-sizing: border-box;
+  /* Prevent inputs from overflowing on small screens */
+  min-width: 0;
+  max-width: 100%;
 }
 .inp:focus {
   border-color: var(--gold);
@@ -91,6 +102,7 @@ textarea.inp { resize: vertical; line-height: 1.6; }
   transition: all .3s;
   position: relative;
   overflow: hidden;
+  max-width: 100%;
 }
 .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 12px 35px rgba(251,191,36,.45); }
 .btn-gold:active { transform: translateY(0); }
@@ -102,6 +114,7 @@ textarea.inp { resize: vertical; line-height: 1.6; }
   cursor: pointer;
   transition: all .3s;
   font-family: 'Nunito', sans-serif;
+  max-width: 100%;
 }
 .btn-ghost:hover { background: rgba(255,255,255,.08); border-color: rgba(251,191,36,.3); color: #f0fdf4; }
 
@@ -133,6 +146,15 @@ textarea.inp { resize: vertical; line-height: 1.6; }
   max-width: 100%;
 }
 
+/* ── TEMPLATE GRID — key fix for cut-off on narrow screens ── */
+.tpl-grid {
+  display: grid;
+  /* Use minmax so columns shrink on very narrow devices instead of overflowing */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+
 /* ── RESPONSIVE GRID ── */
 .eid-grid {
   display: grid;
@@ -141,6 +163,8 @@ textarea.inp { resize: vertical; line-height: 1.6; }
   max-width: 1140px;
   margin: 0 auto;
   width: 100%;
+  /* Critical: prevent children from causing overflow */
+  min-width: 0;
 }
 
 @media (min-width: 920px) {
@@ -152,6 +176,12 @@ textarea.inp { resize: vertical; line-height: 1.6; }
     top: 24px;
     align-self: start;
   }
+}
+
+/* Ensure all direct grid/flex children don't overflow */
+.eid-grid > * {
+  min-width: 0;
+  max-width: 100%;
 }
 
 /* ── TOAST ── */
@@ -172,5 +202,7 @@ textarea.inp { resize: vertical; line-height: 1.6; }
   transition: transform .3s;
   white-space: nowrap;
   pointer-events: none;
+  /* Prevent toast from causing overflow on very small screens */
+  max-width: calc(100vw - 32px);
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
