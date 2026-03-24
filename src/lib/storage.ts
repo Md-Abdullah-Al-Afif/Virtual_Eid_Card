@@ -16,30 +16,21 @@ export interface CardData {
   ts: number
 }
 
-function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
-  const timeout = new Promise<never>((_, reject) =>
-    setTimeout(() => reject(new Error(`Timed out after ${ms}ms`)), ms)
-  )
-  return Promise.race([promise, timeout])
-}
-
 export async function createCard(card: CardData): Promise<void> {
-  await withTimeout(setDoc(doc(db, 'cards', card.id), card), 10000)
+  await setDoc(doc(db, 'cards', card.id), card)
 }
 
 export async function getCard(id: string): Promise<CardData | null> {
   try {
-    const snap = await withTimeout(getDoc(doc(db, 'cards', id)), 10000)
+    const snap = await getDoc(doc(db, 'cards', id))
     if (!snap.exists()) return null
     return snap.data() as CardData
   } catch (err) {
-    console.error('getCard failed:', err)
+    console.error('getCard error:', err)
     return null
   }
 }
 
 export function incrementView(id: string): void {
-  updateDoc(doc(db, 'cards', id), { vc: increment(1) }).catch((err) =>
-    console.warn('incrementView failed (non-critical):', err)
-  )
+  updateDoc(doc(db, 'cards', id), { vc: increment(1) }).catch(() => {})
 }
